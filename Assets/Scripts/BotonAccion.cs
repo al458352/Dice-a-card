@@ -28,12 +28,11 @@ public class BotonAccion : MonoBehaviour
 
             GameManager.Instance.AñadirPuntuacion(resultadoTirada);
 
-            GameManager.Instance.dadoSeleccionado.Deseleccionar();
         }
 
         else if (tipoDeBoton == TipoAccion.Pasar)
         {
-            Debug.Log("Has pasado el turno. (Aquí irá la lógica del enemigo más adelante)");
+            Debug.Log("Has pasado el turno.");
 
             GameManager.Instance.dadoSeleccionado.Deseleccionar();
 

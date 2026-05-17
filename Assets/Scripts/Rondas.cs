@@ -4,22 +4,22 @@ using UnityEngine.SceneManagement;
 public class Rondas : MonoBehaviour
 {
     [Header("Configuración de Escenas")]
-    public string escenaDerrota = "Ronda de combate";
+    public string escenaBatallas = "Batallas"; 
+
     public string escenaVictoria = "Victoria";
 
     [Header("Gestión de Rondas y Enemigos")]
     public CartaEnemigo[] listaDeEnemigos;
     public int rondaActual = 0;
 
-    [Header("Display de Rondas")]
-    public SpriteRenderer displayRonda; 
-    public Sprite[] spritesDeRondas; 
+    [Header("Display de Rondas (Sprites dibujados)")]
+    public SpriteRenderer displayRonda;
+    public Sprite[] spritesDeRondas;
 
     private CartaEnemigo EnemigoActual => listaDeEnemigos[rondaActual];
 
     private void Start()
     {
-  
         ActualizarMesa();
     }
 
@@ -31,12 +31,15 @@ public class Rondas : MonoBehaviour
         int maxPermitido = EnemigoActual.puntuacionMaxima;
         int puntosJugador = GameManager.Instance.puntuacionTotal;
 
+
         if (puntosJugador < minPermitido || puntosJugador > maxPermitido)
         {
-            SceneManager.LoadScene(escenaDerrota);
+            Debug.Log("¡Puntuación fuera de rango! Entrando en combate...");
+            SceneManager.LoadScene(escenaBatallas);
         }
         else
         {
+            Debug.Log("¡Ronda superada pacíficamente!");
             AvanzarRonda();
         }
     }
