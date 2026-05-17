@@ -23,9 +23,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Invoke("InicioRetrasado", 1f);
+    }
+    private void InicioRetrasado()
+    {
         ActualizarMarcadorVisual();
     }
-
     public void AñadirPuntuacion(int cantidad)
     {
         puntuacionTotal += cantidad;
@@ -37,7 +40,9 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Puntuación total acumulada: " + puntuacionTotal);
 
-        ActualizarMarcadorVisual();
+
+
+        Invoke("InicioRetrasado", 1f);
     }
 
     private void ActualizarMarcadorVisual()
