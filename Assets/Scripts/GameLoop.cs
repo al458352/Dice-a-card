@@ -1,13 +1,18 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameLoop : MonoBehaviour
 {
+    [Header("Cantidad de tiempo por ronda")]
+    public float tiempoDeBatalla = 30f;
+
     private void Start()
     {
-        Invoke("VolverARondas", 30f);
+        Invoke("VolverARondas", tiempoDeBatalla);
     }
+
     public void VolverARondas()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("ScenaJuegoCartas");
+        SceneManager.LoadScene("ScenajuegoCartas");
     }
 }

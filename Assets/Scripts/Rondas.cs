@@ -3,9 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class Rondas : MonoBehaviour
 {
-    [Header("Configuración de Escenas")]
-    public string escenaBatallas = "Batallas"; 
+    public static Rondas Instance { get; private set; }
 
+    [Header("Configuración de Escenas")]
+    public string escenaBatalla = "Batallas";
     public string escenaVictoria = "Victoria";
 
     [Header("Gestión de Rondas y Enemigos")]
@@ -18,9 +19,43 @@ public class Rondas : MonoBehaviour
 
     private CartaEnemigo EnemigoActual => listaDeEnemigos[rondaActual];
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject); 
+            return;
+        }
+    }
+
     private void Start()
     {
         ActualizarMesa();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += AlCargarEscena;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= AlCargarEscena;
+    }
+
+    private void AlCargarEscena(Scene escena, LoadSceneMode modo)
+    {
+        if (escena.name == "ScenajuegoCartas")
+        {
+            displayRonda = GameObject.Find("IndicadorDeRonda")?.GetComponent<SpriteRenderer>();
+
+            ActualizarMesa();
+        }
     }
 
     public void EvaluarPuntajeYPasarRonda()
@@ -31,11 +66,10 @@ public class Rondas : MonoBehaviour
         int maxPermitido = EnemigoActual.puntuacionMaxima;
         int puntosJugador = GameManager.Instance.puntuacionTotal;
 
-
         if (puntosJugador < minPermitido || puntosJugador > maxPermitido)
         {
             Debug.Log("¡Puntuación fuera de rango! Entrando en combate...");
-            SceneManager.LoadScene(escenaBatallas);
+            SceneManager.LoadScene(escenaBatalla);
         }
         else
         {
@@ -55,19 +89,19 @@ public class Rondas : MonoBehaviour
         else
         {
             GameManager.Instance.puntuacionTotal = 0;
-
             ActualizarMesa();
         }
     }
 
     private void ActualizarMesa()
     {
-
         for (int i = 0; i < listaDeEnemigos.Length; i++)
         {
-            listaDeEnemigos[i].gameObject.SetActive(false);
+            if (listaDeEnemigos[i] != null)
+            {
+                listaDeEnemigos[i].gameObject.SetActive(i == rondaActual);
+            }
         }
-        listaDeEnemigos[rondaActual].gameObject.SetActive(true);
 
         if (displayRonda != null && spritesDeRondas.Length > rondaActual)
         {
