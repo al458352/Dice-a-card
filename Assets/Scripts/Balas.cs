@@ -1,6 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-// Esto le dice a Unity: "¡Oye, no me dejes poner este script si no hay Rigidbody y Collider!"
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class BalaInerciaFisica : MonoBehaviour
@@ -10,53 +10,58 @@ public class BalaInerciaFisica : MonoBehaviour
 
     [Header("Configuración del Giro (Inercia)")]
     [Tooltip("A mayor número, más rápido gira hacia el jugador (más difícil)")]
-    public float velocidadGiro = 200f; // Al usar físicas, a veces hay que subir un poco este valor
+    public float velocidadGiro = 200f; 
 
     private Rigidbody2D rb;
 
     private void Start()
     {
-        // Guardamos el Rigidbody al nacer
         rb = GetComponent<Rigidbody2D>();
+
+        int rondaActual = Rondas.Instance.rondaActual;
+        float duracionBala = FindObjectOfType<SpawnerBalas>().dificultadPorRonda[rondaActual].duracionDeBalaEnSegundos;
+        Destroy(gameObject, duracionBala);
     }
 
-    // IMPORTANTÍSIMO: Las físicas SIEMPRE se mueven aquí, no en Update()
     private void FixedUpdate()
     {
-        // 1. Si el jugador muere o desaparece, la bala sigue recta
         if (objetivo == null)
         {
-            rb.linearVelocity = transform.up * velocidadBase; // Nota: En Unity 6 se usa linearVelocity (antes era solo velocity)
+            rb.linearVelocity = transform.up * velocidadBase;
             return;
         }
 
-        // 2. Calculamos la dirección hacia el jugador
         Vector2 direccionAlObjetivo = (Vector2)objetivo.position - rb.position;
         direccionAlObjetivo.Normalize();
 
-        // 3. Calculamos el ángulo matemático
         float anguloObjetivo = Mathf.Atan2(direccionAlObjetivo.y, direccionAlObjetivo.x) * Mathf.Rad2Deg - 90f;
 
-        // 4. EL TRUCO DE LA INERCIA (VERSIÓN FÍSICA)
-        // MoveTowardsAngle gira el Rigidbody de forma suave y constante
         float anguloSuavizado = Mathf.MoveTowardsAngle(rb.rotation, anguloObjetivo, velocidadGiro * Time.fixedDeltaTime);
         rb.MoveRotation(anguloSuavizado);
 
-        // 5. Aplicamos el empuje (motor) hacia donde está mirando la bala
         rb.linearVelocity = transform.up * velocidadBase;
     }
 
-    // Así detectas si le ha dado al jugador usando el BoxCollider2D
     private void OnTriggerEnter2D(Collider2D otro)
     {
         if (otro.CompareTag("Player"))
         {
-            Debug.Log("¡PUM! Has golpeado al jugador.");
+            Debug.Log("¡PUM! Has golpeado al jugador. Volviendo a las cartas...");
 
-            // Aquí llamarías al script de vida del jugador
-            // otro.GetComponent<VidaJugador>().RecibirDaño(1);
+            int rondaActual = Rondas.Instance.rondaActual;
+            CartaEnemigo enemigoActual = Rondas.Instance.listaDeEnemigos[rondaActual];
 
-            // Destruimos la bala tras el impacto
+            if (enemigoActual.DañoAlJugador != null && enemigoActual.DañoAlJugador.Length > 0)
+            {
+                int dañoMin = enemigoActual.DañoAlJugador[0].dañoMinimo;
+                int dañoMax = enemigoActual.DañoAlJugador[0].dañoMaximo;
+                int dañoCalculado = Random.Range(dañoMin, dañoMax + 1);
+
+                GameManager.Instance.RecibirDaño(dañoCalculado);
+            }
+
+            SceneManager.LoadScene("ScenajuegoCartas");
+
             Destroy(gameObject);
         }
     }

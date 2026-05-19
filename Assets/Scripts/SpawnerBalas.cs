@@ -10,6 +10,7 @@ public class SpawnerBalas : MonoBehaviour
         public int cantidadTotalBalas = 10;
         public float intervaloEntreBalas = 1.0f;
         public float velocidadBaseBalas = 5f;
+        public float duracionDeBalaEnSegundos = 3f;
     }
 
     [Header("Configuración de Dificultad")]
@@ -56,7 +57,7 @@ public class SpawnerBalas : MonoBehaviour
 
         transform.Rotate(Vector3.forward * velocidadDeGiroDelCirculo * Time.deltaTime);
 
- 
+
         if (referenciaJugador != null)
         {
             transform.position = referenciaJugador.position;
@@ -86,12 +87,11 @@ public class SpawnerBalas : MonoBehaviour
             int indiceAleatorio = Random.Range(0, puntosDeOrigen.Length);
             Transform puntoDisparoElegido = puntosDeOrigen[indiceAleatorio];
 
-
             if (puntoDisparoElegido != null)
             {
                 GameObject nuevaBala = Instantiate(prefabBalaInercia, puntoDisparoElegido.position, Quaternion.identity);
 
-                BalaInercia scriptBala = nuevaBala.GetComponent<BalaInercia>();
+                BalaInerciaFisica scriptBala = nuevaBala.GetComponent<BalaInerciaFisica>();
                 if (scriptBala != null)
                 {
                     scriptBala.objetivo = referenciaJugador;

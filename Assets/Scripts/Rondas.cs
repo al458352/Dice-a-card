@@ -6,7 +6,7 @@ public class Rondas : MonoBehaviour
     public static Rondas Instance { get; private set; }
 
     [Header("Configuración de Escenas")]
-    public string escenaBatalla = "Batallas";
+    public string escenaBatalla = "batallas";
     public string escenaVictoria = "Victoria";
 
     [Header("Gestión de Rondas y Enemigos")]
@@ -28,7 +28,10 @@ public class Rondas : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject); 
+            Instance.listaDeEnemigos = this.listaDeEnemigos;
+            Instance.ActualizarMesa();
+
+            Destroy(gameObject);
             return;
         }
     }
@@ -52,9 +55,23 @@ public class Rondas : MonoBehaviour
     {
         if (escena.name == "ScenajuegoCartas")
         {
-            displayRonda = GameObject.Find("IndicadorDeRonda")?.GetComponent<SpriteRenderer>();
+            if (displayRonda == null)
+            {
+                displayRonda = GameObject.Find("IndicadorDeRonda")?.GetComponent<SpriteRenderer>();
+            }
+
+            if (displayRonda != null) displayRonda.enabled = true;
 
             ActualizarMesa();
+        }
+        else if (escena.name == escenaBatalla)
+        {
+            if (displayRonda == null)
+            {
+                displayRonda = GetComponent<SpriteRenderer>();
+            }
+
+            if (displayRonda != null) displayRonda.enabled = false;
         }
     }
 
@@ -82,8 +99,9 @@ public class Rondas : MonoBehaviour
     {
         rondaActual++;
 
-        if (rondaActual >= listaDeEnemigos.Length)
+        if (rondaActual >= 5 || rondaActual >= listaDeEnemigos.Length)
         {
+            Debug.LogWarning("¡Juego completado! Cargando escena de Victoria...");
             SceneManager.LoadScene(escenaVictoria);
         }
         else
@@ -93,7 +111,7 @@ public class Rondas : MonoBehaviour
         }
     }
 
-    private void ActualizarMesa()
+    public void ActualizarMesa()
     {
         for (int i = 0; i < listaDeEnemigos.Length; i++)
         {
@@ -103,7 +121,7 @@ public class Rondas : MonoBehaviour
             }
         }
 
-        if (displayRonda != null && spritesDeRondas.Length > rondaActual)
+        if (displayRonda != null && spritesDeRondas != null && rondaActual < spritesDeRondas.Length)
         {
             displayRonda.sprite = spritesDeRondas[rondaActual];
         }

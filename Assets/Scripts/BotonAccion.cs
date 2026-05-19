@@ -2,46 +2,38 @@ using UnityEngine;
 
 public class BotonAccion : MonoBehaviour
 {
-  
     public enum TipoAccion { Tirar, Pasar }
 
     [Header("¿Qué hace este botón?")]
     public TipoAccion tipoDeBoton;
 
-    [Header("Conexion al Manejo de rondas")]
-    public Rondas scriptRondas;
-
     void OnMouseDown()
     {
- 
-        if (GameManager.Instance.dadoSeleccionado == null)
-        {
-            Debug.Log("¡Debes seleccionar un dado primero!");
-            return; 
-        }
-
         if (tipoDeBoton == TipoAccion.Tirar)
-        {         
+        {
+            if (GameManager.Instance.dadoSeleccionado == null)
+            {
+                Debug.Log("¡Debes seleccionar un dado primero para tirar!");
+                return;
+            }
+
             int resultadoTirada = GameManager.Instance.dadoSeleccionado.TirarDado();
-
             Debug.Log("¡Has tirado el dado y has sacado un " + resultadoTirada + "!");
-
             GameManager.Instance.AñadirPuntuacion(resultadoTirada);
-
         }
-
         else if (tipoDeBoton == TipoAccion.Pasar)
         {
             Debug.Log("Has pasado el turno.");
 
-            GameManager.Instance.dadoSeleccionado.Deseleccionar();
-
-            if (scriptRondas != null)
+            if (GameManager.Instance.dadoSeleccionado != null)
             {
-                scriptRondas.EvaluarPuntajeYPasarRonda();
+                GameManager.Instance.dadoSeleccionado.Deseleccionar();
             }
 
-
+            if (Rondas.Instance != null)
+            {
+                Rondas.Instance.EvaluarPuntajeYPasarRonda();
+            }
         }
     }
 }
