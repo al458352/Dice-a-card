@@ -4,7 +4,7 @@ public class BotonAccion : MonoBehaviour
 {
     public enum TipoAccion { Tirar, Pasar }
 
-    [Header("¿Qué hace este botón?")]
+    [Header("botón")]
     public TipoAccion tipoDeBoton;
 
     void OnMouseDown()
@@ -13,7 +13,7 @@ public class BotonAccion : MonoBehaviour
         {
             if (GameManager.Instance.dadoSeleccionado == null)
             {
-                Debug.Log("¡Debes seleccionar un dado primero para tirar!");
+                Debug.Log("selecciona un dado primero");
                 return;
             }
 

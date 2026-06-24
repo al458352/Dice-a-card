@@ -9,10 +9,10 @@ public class DadoController : MonoBehaviour
     public float elevacionY = 0.5f;
     public bool estaSeleccionado = false;
 
-    [Header("Configuración del Dado")]
+    [Header("Configuración")]
     public int carasDelDado = 6;
 
-    [Header("Gráficos del Dado")]
+    [Header("Gráficos")]
     public Sprite[] carasSprites; 
 
     private SpriteRenderer spriteRenderer;
@@ -106,7 +106,7 @@ public class DadoController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Faltan sprites en el array carasSprites o el valor sacado es mayor que los sprites disponibles.");
+            Debug.LogWarning("Faltan sprites ");
         }
     }
 }

@@ -8,8 +8,8 @@ public class BalaInerciaFisica : MonoBehaviour
     [HideInInspector] public Transform objetivo;
     [HideInInspector] public float velocidadBase;
 
-    [Header("Configuración del Giro (Inercia)")]
-    [Tooltip("A mayor número, más rápido gira hacia el jugador (más difícil)")]
+    [Header("Inercia")]
+    [Tooltip("más difícil")]
     public float velocidadGiro = 200f; 
 
     private Rigidbody2D rb;
@@ -19,7 +19,7 @@ public class BalaInerciaFisica : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         int rondaActual = Rondas.Instance.rondaActual;
-        float duracionBala = FindObjectOfType<SpawnerBalas>().dificultadPorRonda[rondaActual].duracionDeBalaEnSegundos;
+        float duracionBala = FindAnyObjectByType<SpawnerBalas>().dificultadPorRonda[rondaActual].duracionDeBalaEnSegundos;
         Destroy(gameObject, duracionBala);
     }
 
@@ -46,7 +46,7 @@ public class BalaInerciaFisica : MonoBehaviour
     {
         if (otro.CompareTag("Player"))
         {
-            Debug.Log("¡PUM! Has golpeado al jugador. Volviendo a las cartas...");
+            Debug.Log("jugador golpeado. Volviendo a las cartas");
 
             int rondaActual = Rondas.Instance.rondaActual;
             CartaEnemigo enemigoActual = Rondas.Instance.listaDeEnemigos[rondaActual];

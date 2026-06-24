@@ -7,7 +7,7 @@ public class BotonStart : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("¡Botón Start pulsado! Cargando el juego...");
+        Debug.Log("Start pulsado");
         SceneManager.LoadScene(nombreEscenaJuego);
     }
 }

@@ -5,15 +5,15 @@ public class Rondas : MonoBehaviour
 {
     public static Rondas Instance { get; private set; }
 
-    [Header("Configuración de Escenas")]
+    [Header("Escenas")]
     public string escenaBatalla = "batallas";
     public string escenaVictoria = "Victoria";
 
-    [Header("Gestión de Rondas y Enemigos")]
+    [Header("Rondas y Enemigos")]
     public CartaEnemigo[] listaDeEnemigos;
     public int rondaActual = 0;
 
-    [Header("Display de Rondas (Sprites dibujados)")]
+    [Header("Rondas)")]
     public SpriteRenderer displayRonda;
     public Sprite[] spritesDeRondas;
 
@@ -85,12 +85,12 @@ public class Rondas : MonoBehaviour
 
         if (puntosJugador < minPermitido || puntosJugador > maxPermitido)
         {
-            Debug.Log("¡Puntuación fuera de rango! Entrando en combate...");
+            Debug.Log("Entrando en combate");
             SceneManager.LoadScene(escenaBatalla);
         }
         else
         {
-            Debug.Log("¡Ronda superada pacíficamente!");
+            Debug.Log("Ronda superada");
             AvanzarRonda();
         }
     }
@@ -101,7 +101,7 @@ public class Rondas : MonoBehaviour
 
         if (rondaActual >= 5 || rondaActual >= listaDeEnemigos.Length)
         {
-            Debug.LogWarning("¡Juego completado! Cargando escena de Victoria...");
+            Debug.LogWarning("escena de Victoria");
             SceneManager.LoadScene(escenaVictoria);
         }
         else

@@ -13,18 +13,18 @@ public class SpawnerBalas : MonoBehaviour
         public float duracionDeBalaEnSegundos = 3f;
     }
 
-    [Header("Configuración de Dificultad")]
+    [Header("Dificultad")]
     public DatosDificultadRonda[] dificultadPorRonda;
 
-    [Header("Referencias de Prefabs")]
+    [Header("Prefabs")]
     public GameObject prefabBalaInercia;
     public string tagDelJugador = "Player";
 
-    [Header("Configuración del Círculo (Satélites)")]
-    [Tooltip("Arrastra aquí todos los GameObjects vacíos que actúan como puntos de disparo.")]
+    [Header("Satélites")]
+    [Tooltip("puntos de disparo.")]
     public Transform[] puntosDeOrigen;
 
-    [Tooltip("Velocidad a la que gira el círculo de spawners alrededor del jugador.")]
+    [Tooltip("Velocidad de spawners")]
     public float velocidadDeGiroDelCirculo = 50f;
 
     private int balasADisparar;
@@ -41,7 +41,7 @@ public class SpawnerBalas : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No se encontró ningún GameObject con el Tag 'Player'.");
+            Debug.LogError("ningún GameObject con el Tag 'Player'.");
         }
 
         ConfigurarDificultad();

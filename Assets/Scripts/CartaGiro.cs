@@ -4,11 +4,11 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class CartaGiro : MonoBehaviour
 {
-    [Header("Configuración de Sprites")]
+    [Header("Sprites")]
     public Sprite spriteFrente;  
     public Sprite spriteReverso; 
 
-    [Header("Configuración del Giro")]
+    [Header("Giro")]
     public float duracionGiro = 0.4f;    
     public bool empiezaBocaAbajo = true;  
 

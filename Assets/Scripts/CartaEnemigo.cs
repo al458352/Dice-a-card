@@ -9,11 +9,11 @@ public class IntervaloDaño
 
     public class CartaEnemigo : MonoBehaviour
 {
-    [Header("Información del Enemigo")]
+    [Header("Información Enemigo")]
     public string nombreEnemigo = "Nuevo Enemigo"; 
 
 
-    [Header("Condición de Victoria (Intervalo)")]
+    [Header("Condición de Victoria")]
     [Tooltip("La puntuación mínima que necesita el jugador para pasar.")]
     public int puntuacionMinima = 0;
 

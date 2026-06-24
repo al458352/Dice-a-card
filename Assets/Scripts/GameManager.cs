@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public float vidaJugador = 100f;
     public Slider barraDeVida;
 
-    [Header("Objetos UI (Sprites de Puntuación)")]
+    [Header("Objetos UI")]
     public SpriteRenderer renderX;
     public SpriteRenderer renderDecenas;
     public SpriteRenderer renderUnidades;
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
         {
             vidaJugador = 0;
             ActualizarBarraVisual();
-            Debug.LogWarning("¡El jugador ha muerto! Cargando escena de derrota...");
+            Debug.LogWarning("escena de derrota");
             SceneManager.LoadScene("HasPerdido");
             return;
         }
